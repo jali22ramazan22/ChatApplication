@@ -1,0 +1,18 @@
+<div class="chat-holder-info">
+  <div class="settings">
+    <img [src]="computeImgPath('settings')">
+  </div>
+  <div class="avatar">
+    <img [src]="computeImgPath('avatar_sample.jpg')">
+  </div>
+  <div class="info">
+    @if(!username){
+      <p>Username</p>
+    } @else{
+      <p>{{username}}</p>
+    }
+  </div>
+  <div class="hide-chat-list">
+    <p (click)="onLogout()"><--</p>
+  </div>
+</div>

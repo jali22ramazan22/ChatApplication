@@ -1,0 +1,16 @@
+<div class="main-window">
+  <router-outlet></router-outlet>
+  @if(errorMessage){
+    <app-error-component></app-error-component>
+  }
+  @if(addChat && !selectedChat){
+    <app-absolute-overlay>
+      <app-add-chat />
+    </app-absolute-overlay>
+  }
+</div>
+
+<div class="background">
+  <img [src]="computeImgPath('background.png')" />
+</div>
+

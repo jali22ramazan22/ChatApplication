@@ -1,0 +1,22 @@
+<div class="form-placement">
+  <div class="auth-header">
+      <p>Login in Chat Application</p>
+  </div>
+
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+      <div class="form-field">
+        <input placeholder="Login" [formControl]="form.controls.username">
+      </div>
+      <div class="form-field">
+        <input placeholder="Password" type="password" [formControl]="form.controls.password">
+      </div>
+
+    </form>
+  <button class="auth-btn" [disabled]="form.invalid" type="submit" (click)="onSubmit()">Login</button>
+  <div class="have-account">
+    Don't have an account? <strong (click)="onNavigateToRegister()">Sign-up</strong>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,35 @@
+.btn {
+  position: relative;
+  color: #eeeeee;
+  border: none;
+  font-size: 1.5vh;
+  padding: 2vh;
+  background: rgb(84, 115, 138);
+  border-radius: 1vh;
+  transition-duration: 1s;
+  transition: 0.5s ease;
+}
+
+.btn:hover {
+  background-color: rgb(119, 162, 198);
+}
+.btn:active {
+  transform: scale(0.95);
+}
+
+.btn:disabled,
+.btn.disabled {
+  color: #fff;
+  border-color: #a0a0a0;
+  background-color: rgba(189, 202, 221, 0.9);
+}
+
+.btn:disabled:hover,
+.btn:disabled:focus,
+.btn.disabled:hover,
+.btn.disabled:focus {
+  color: #fff;
+  border-color: #a0a0a0;
+  background-color: rgb(84, 115, 138);
+  transform: scale(1);
+}

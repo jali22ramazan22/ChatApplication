@@ -1,0 +1,34 @@
+<div class="chat-list">
+  @if(fetchingStatus){
+    <div class="loader">
+    </div>
+  } @else{
+    @for(chat of chatList; track chat){
+      <div class="chat-item" (click)="onSelectChat(chat)" [ngClass]="{'selected-chat': selectedChat === chat}"
+        >
+        <div class="brief-chat-info">
+          <div class="brief-companion-name">{{ chat.companion | transformName }}</div>
+          <div class="last-message-info">
+            @if (last_message(chat)){
+              <div class="sender-info">
+                {{last_message(chat)?.from}}:
+              </div>
+              <div class="last-message-content">
+                {{last_message(chat)?.message}}
+              </div>
+            } @else{
+            }
+
+          </div>
+        </div>
+        <div class="brief-avatar">
+          <img [src]="computeImgPath('avatar_sample.png')">
+        </div>
+      </div>
+    }
+    <div class="add-chat" (click)="onAddChat()">
+      <p>+</p>
+    </div>
+  }
+
+</div>

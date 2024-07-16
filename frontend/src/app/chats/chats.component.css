@@ -1,0 +1,30 @@
+.chat-layout{
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+}
+
+.chats{
+  height: 100%;
+  position: relative;
+  background: rgb(1,1,1,0.3);
+  left: 5%;
+  width: 99%;
+  border-radius: 3vh;
+}
+
+.content-holder{
+  position: relative;
+  padding: 2vh;
+  display: flex;
+  flex-direction: column;
+  height: 90%
+}
+
+.chat-header{
+  font-size: 3vh;
+  position: relative;
+  text-align: center;
+  border-radius: 1vh;
+  width: 100%;
+  background: rgb(1,1,1, 0.1);
+}

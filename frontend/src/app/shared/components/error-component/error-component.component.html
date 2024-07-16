@@ -1,0 +1,8 @@
+<div class="error-overlay" (click)="onHideMessage()">
+  <div class="error-message" >
+    <p> {{ errorMessage }} </p>
+  </div>
+  <div class="timeout-bar">
+    <div class="timeout-already" progressBarChange [progress]="progress"></div>
+  </div>
+</div>

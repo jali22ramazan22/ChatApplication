@@ -1,0 +1,23 @@
+<div class="form-placement">
+  <div class="auth-header">
+    <p>Register your account</p>
+  </div>
+
+    <form (ngSubmit)="onSubmit()" [formGroup]="registrationForm">
+      <div class="form-field">
+        <input placeholder="Login" [formControl]="registrationForm.controls.username">
+      </div>
+      <div class="form-field">
+        <input placeholder="Email" [formControl]="registrationForm.controls.email">
+      </div>
+      <div class="form-field">
+        <input placeholder="Password" type="password" [formControl]="registrationForm.controls.password">
+      </div>
+    </form>
+
+
+  <button class="auth-btn" [disabled]="registrationForm.invalid" (click)="onSubmit()">Register your account</button>
+  <div class="have-account">
+    Have an account? <strong (click)="onNavigateToLogin()">Login</strong>
+  </div>
+</div>

@@ -1,0 +1,91 @@
+/* HTML: <div class="loader"></div> */
+.loader {
+  position: relative;
+  width: 5vw;
+  height: 2vh;
+  left: 35%;
+  background:
+    linear-gradient(#2c2c2c 50%,#0000 0),
+    linear-gradient(#0000 50%,#2c2c2c 0),
+    linear-gradient(#2c2c2c 50%,#0000 0),
+    linear-gradient(#0000 50%,#2c2c2c 0),
+    linear-gradient(#2c2c2c 50%,#0000 0),
+    linear-gradient(#0000 50%,#2c2c2c 0)
+    #ddd;
+  background-size: calc(100%/6 + 1px) 200%;
+  background-repeat: no-repeat;
+  animation: l12 2s infinite;
+}
+@keyframes l12 {
+  0%     {background-position: calc(0*100%/5) 100%,calc(1*100%/5)   0%,calc(2*100%/5) 100%,calc(3*100%/5)   0%,calc(4*100%/5) 100%,calc(5*100%/5)   0%}
+  16.67% {background-position: calc(0*100%/5)   0%,calc(1*100%/5)   0%,calc(2*100%/5) 100%,calc(3*100%/5)   0%,calc(4*100%/5) 100%,calc(5*100%/5)   0%}
+  33.33% {background-position: calc(0*100%/5)   0%,calc(1*100%/5) 100%,calc(2*100%/5) 100%,calc(3*100%/5)   0%,calc(4*100%/5) 100%,calc(5*100%/5)   0%}
+  50%    {background-position: calc(0*100%/5)   0%,calc(1*100%/5) 100%,calc(2*100%/5)   0%,calc(3*100%/5)   0%,calc(4*100%/5) 100%,calc(5*100%/5)   0%}
+  66.67% {background-position: calc(0*100%/5)   0%,calc(1*100%/5) 100%,calc(2*100%/5)   0%,calc(3*100%/5) 100%,calc(4*100%/5) 100%,calc(5*100%/5)   0%}
+  83.33% {background-position: calc(0*100%/5)   0%,calc(1*100%/5) 100%,calc(2*100%/5)   0%,calc(3*100%/5) 100%,calc(4*100%/5)   0%,calc(5*100%/5)   0%}
+  100%   {background-position: calc(0*100%/5)   0%,calc(1*100%/5) 100%,calc(2*100%/5)   0%,calc(3*100%/5) 100%,calc(4*100%/5)   0%,calc(5*100%/5) 100%}
+}
+
+
+.chat-list{
+  margin-top: 5vh;
+  display: flex;
+  gap: 2vh;
+  flex-direction: column;
+  font-size: 2.5vh;
+  text-align: center;
+  overflow-y: auto;
+  height: 75vh;
+  transition: 0.5s ease;
+}
+
+.add-chat{
+  text-align: center;
+
+}
+
+.add-chat, .chat-item{
+  background: rgb(5,5,5,0.1);
+  margin-top: 1vh;
+  align-items: center;
+  border-radius: 1vh;
+
+  transition: 0.25s ease;
+}
+
+.chat-item{
+  padding: 0.5vh;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+}
+.chat-item:hover, .add-chat:hover{
+  background: rgb(255,255,255, 0.4);
+}
+
+.selected-chat{
+  background: rgb(255,255,255, 0.4);
+}
+.brief-chat-info{
+  display: grid;
+  grid-template-rows: 1fr 2fr
+}
+.brief-companion-name{
+  font-size: 2vh;
+
+}
+.last-message-info{
+  display: grid;
+  padding: 1vh;
+  margin-top: 0.8vh;
+  font-size: 1.25vh;
+  grid-template-columns: 1fr 2fr;
+}
+
+.brief-avatar img{
+  position: relative;
+  width: 2.2vw;
+  border-radius: 2vh;
+  left: 10%;
+}
+
+

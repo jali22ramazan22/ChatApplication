@@ -1,0 +1,32 @@
+.chat-holder-info{
+  display: flex;
+  font-size: 1.7vh;
+  align-items: center;
+  gap: 2vw;
+  margin-bottom: 1vh;
+  background: rgb(1,1,1,0.1);
+  border-radius: 1vw;
+  padding: 1vh 1vh 1vh 1vh;
+  flex-direction: row;
+}
+.settings img{
+  width: 2vh;
+  transition: 0.25s ease;
+}
+.info p{
+  position: relative;
+
+}
+.avatar img{
+  width: 4vh;
+  border-radius: 2vh;
+}
+
+.settings img:hover{
+  background: rgb(255,255,255, 0.6);
+}
+.hide-chat-list p{
+  position: relative;
+  text-align: center;
+  right: 0;
+}

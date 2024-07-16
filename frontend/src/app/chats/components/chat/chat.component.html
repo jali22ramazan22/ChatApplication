@@ -1,0 +1,54 @@
+  @if(selectedChat){
+    <div class="chat-app">
+    <div class="companion-name">
+      <div class="companion-info">
+        <div>
+          <p>{{ selectedChat.companion }}</p>
+        </div>
+        <div class="status" [ngStyle]="{'color': !selectedChat.status ? 'gray' : 'green'}">
+          {{ selectedChat.typing ? 'Typing...' : (selectedChat.status ? 'Online' : 'Offline') }}
+        </div>
+      </div>
+      <div class="companion-avatar">
+        <img [src]="computeImgPath('avatar_sample.png')">
+      </div>
+    </div>
+    <div class="messages-holder">
+      <div class="message-list">
+        @for(message of chatMsgHistory; track message){
+            @if(message.from === authUsername && message.from != undefined){
+              <div class="message-item-me">
+                <div class="message-sender">
+                  {{message.from}}
+                </div>
+                <div class="message-content">
+                  {{message.message}}
+                </div>
+              </div>
+            } @else if(message.from !== authUsername && message.from != undefined){
+              <div class="message-item-companion">
+                <div class="message-sender">
+                  {{message.from}}
+                </div>
+                <div class="message-content">
+                  {{message.message}}
+                </div>
+              </div>
+            }
+        }
+      </div>
+    </div>
+    <div class="input-message">
+      <div class="input-content">
+        <textarea placeholder="Input a message..."
+                  [(ngModel)]="inputMessage"
+                  resizeInput [inputMessage]="inputMessage"
+                  (ngModelChange)="onHandleTyping()"></textarea>
+      </div>
+      <div >
+        <img [src]="computeImgPath('send')" (click)="onSendMessage()" alt="">
+      </div>
+    </div>
+    </div>
+  }
+

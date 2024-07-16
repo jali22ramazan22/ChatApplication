@@ -1,0 +1,8 @@
+<div class="auth-layout">
+  @if(isFetching){
+    <div class="loader">
+    </div>
+  } @else{
+    <router-outlet></router-outlet>
+  }
+</div>

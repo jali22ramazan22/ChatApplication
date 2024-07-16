@@ -1,0 +1,33 @@
+<div class="add-chat">
+  @if(!usersArr || usersArr.length <= 0){
+    <div class="add-chat-header" (click)="onClose()">
+      <p>All Users has been added</p>
+    </div>
+  }
+  @else{
+    <div class="add-chat-header" (click)="onClose()">
+      <p>Add User to Contact</p>
+    </div>
+    @if(isFetching){
+      <div class="loader"></div>
+    }
+    @else{
+      <div class="user-list">
+        @for(user of usersArr; track user){
+          <div class="user-list-item">
+            <div class="user-avatar">
+              <img [src]="computeImgPath('avatar_sample.png')">
+            </div>
+            <div class="user-username">
+              {{user.username | transformName}}
+            </div>
+            <div class="add-btn">
+              <app-button #button label="Add" [condition]="false" desiredLabel="Added" (click)="onAddUserChat(user)">
+              </app-button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

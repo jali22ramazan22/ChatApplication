@@ -1,0 +1,128 @@
+
+.message-item-companion, .message-item-me{
+  display: grid;
+  grid-template-rows: 1fr 3fr;
+  position: relative;
+  background: 	#54738a;
+  padding: 1vh;
+  width: 50%;
+  gap: 1vh;
+  border-radius: 2vh;
+
+}
+
+.message-item-companion{
+  left: 11.5%;
+}
+.message-item-me{
+  left: 47.5%;
+}
+
+.message-sender{
+  font-size: 1.5vh;
+  color: #e81b00;
+}
+
+.message-sender, .message-content{
+  margin-left: 2vh;
+}
+
+.message-content{
+  font-size: 1.5vh;
+  color: #ffffff;
+}
+.message-list{
+  position: relative;
+  padding: 2vh;
+  overflow-y: auto;
+  height: 68.2vh;
+  width: 87%;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5vh;
+}
+
+
+.input-message img{
+  width: 3.5vh;
+  background: rgb(1,1,1, 0.3);
+  border-radius: 1vh;
+  padding: 1vh;
+}
+
+  .input-message textarea{
+   border: none;
+   border-radius: 1vh;
+   line-height: 3.5vh;
+   position: relative;
+   left: 15%;
+
+   font-size: 1vw;
+   background: rgb(1,1,1, 0.3);
+   color: whitesmoke;
+   text-align: center;
+   display:inline-block;
+   overflow-x: auto;
+   transition: 0.2s;
+   line-break: auto;
+   resize: none;
+   align-content: center;
+   outline:none;
+ }
+.form-field textarea::placeholder{
+    font-size: 1.5vh;
+  }
+
+.chat-app{
+  padding: 2vh;
+  width: 90%;
+  left: 5%;
+  background: rgb(1,1,1,0.3);
+  border-radius: 4vh;
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr 6fr 1fr;
+}
+
+.companion-name{
+  position: relative;
+  border-radius: 1vh;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  width: 80%;
+  height: 90%;
+  left: 10%;
+  align-items: center;
+  color: white;
+  background: rgb(1,1,1, 0.3);
+}
+
+.companion-info{
+  position: relative;
+  left: 10%;
+  display: grid;
+  grid-template-rows: auto auto;
+  text-align: center;
+  font-size: 2.5vh;
+}
+.status{
+  color: #0c6f6f;
+  font-size: 1.5vh;
+  margin-bottom: 2vh;
+}
+
+.companion-avatar img{
+  width: 5vw;
+  border-radius: 50%;
+
+}
+
+.input-message{
+  align-content: center;
+  border-radius: 15vh;
+  align-items: center;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+}
