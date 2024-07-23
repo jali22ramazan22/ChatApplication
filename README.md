@@ -10,8 +10,8 @@
 
 
 # branch
-This is an experimental 
-branch for production experimenting features that will be added soon
+This is an dev_only
+branch for adding new features that is not checked properly
 
 
 
