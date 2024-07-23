@@ -11,14 +11,12 @@ logger = logging.getLogger(__name__)
 
 class ChatConsumer(WebsocketConsumer):
     connected_users = {}
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = None
         self.chat = None
 
     def connect(self):
-
         self.accept()
         try:
             decoded_query_data = self.scope['query_string'].decode('utf-8')
