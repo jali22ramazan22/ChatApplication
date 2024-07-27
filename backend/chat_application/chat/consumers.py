@@ -5,12 +5,14 @@ from .models import Message, GroupMember, Conversation
 from chat.utils.parseJWT import parse_token, parse_chat
 from datetime import datetime
 import logging
-
+from typing import NamedTuple
 logger = logging.getLogger(__name__)
 
 
 class ChatConsumer(WebsocketConsumer):
+
     connected_users = {}
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = None
@@ -86,9 +88,13 @@ class ChatConsumer(WebsocketConsumer):
         )
 
     def receive(self, text_data=None, bytes_data=None):
+        assert (isinstance(text_data, bytes))
         if not text_data:
             logger.error("Empty text data received")
-            self.send(text_data=json.dumps({'status': 'error', 'message': 'Empty text data received'}))
+            self.send(text_data=json.dumps({
+                'status': 'error',
+                'message': 'Empty text data received'
+            }))
             return
         try:
             parsed_data = json.loads(text_data)
