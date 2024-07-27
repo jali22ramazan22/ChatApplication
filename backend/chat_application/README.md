@@ -6,3 +6,9 @@
 - This container also working with virtualizing with docker that allows you to run it independently of OS you're using
 - However, it does not provide any distinct databases like mariaDB container, so it stores the sqllite db inside of itself.
 - Thus, any changes in db will be removed as soon as container shuts down 
+
+
+# To run the server
+```c 
+docker build -t chatapp_backend_dev && docker run -d chatapp_backenddev
+```
