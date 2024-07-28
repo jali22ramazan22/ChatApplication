@@ -16,9 +16,6 @@ class GroupMember(models.Model):
     def __str__(self):
         return f'The user {self.user_member} is participant of {self.conversation_id}'
 
-    def get_conversation(self):
-        return self.conversation_id
-
 
 class Message(models.Model):
     from_user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -28,11 +25,3 @@ class Message(models.Model):
 
     def __str__(self):
         return f'The message sent from {self.from_user} with text {self.message_text} at {self.sent_datetime} of {self.conversation_id}'
-
-
-class ContactBook(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    user_in_contact = models.ManyToManyField(User, related_name='contact_of', blank=True)
-
-    def __str__(self):
-        return f'Contact book of {self.user.username}'

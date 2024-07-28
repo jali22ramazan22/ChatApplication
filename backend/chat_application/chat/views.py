@@ -23,32 +23,32 @@ def get_companions_of_related_chats(user_owner=None):
     return conversations, companions
 
 
-class Chats(APIView):
-    def get(self, request):
-        user = parse_token(request, 'HTTP')  #importing the util to get the user id based on JWT AUTH
-        conversations, companions = get_companions_of_related_chats(user)
+@api_view(['GET'])
+def get_chats(request):
+    user = parse_token(request, 'HTTP')  # importing the util to get the user id based on JWT AUTH
+    conversations, companions = get_companions_of_related_chats(user)
 
-        data = []
+    data = []
 
-        for conversation in conversations:
-            messages = Message.objects.filter(conversation_id=conversation)
-            message_lst = [
-                {
-                    "from": message.from_user.username,
-                    "message": message.message_text
-                }
-                for message in messages]
+    for conversation in conversations:
+        messages = Message.objects.filter(conversation_id=conversation)
+        message_lst = [
+            {
+                "from": message.from_user.username,
+                "message": message.message_text
+            }
+            for message in messages]
 
-            companion = companions.filter(conversation_id=conversation).first()
-            if companion:
-                item = {
-                    "conversation": conversation.conversation_name,
-                    "companion": companion.user_member.username,
-                    'message': message_lst
-                }
-                data.append(item)
+        companion = companions.filter(conversation_id=conversation).first()
+        if companion:
+            item = {
+                "conversation": conversation.conversation_name,
+                "companion": companion.user_member.username,
+                'message': message_lst
+            }
+            data.append(item)
 
-        return Response(data={"chats": data}, status=status.HTTP_200_OK)
+    return Response(data={"chats": data}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -73,17 +73,17 @@ def create_new_chat(request):
     try:
         data = json.loads(request.body.decode('utf-8'))
     except json.JSONDecodeError:
-        raise ParseError('Invalid data format')
+        raise APIException('Invalid data format')
 
     if 'user' not in data:
-        raise ParseError('User to add is required')
+        raise APIException('User to add is required')
 
     user_to_add_username = data['user']['username']
 
     try:
         user_to_add = User.objects.get(username=user_to_add_username)
     except User.DoesNotExist:
-        raise ParseError('User to add does not exist')
+        raise APIException('User to add does not exist')
 
     conversation_name = f'{user.username}_{user_to_add.username}'
     print(conversation_name)
@@ -122,11 +122,10 @@ def delete_chat(request):
         return Response({"detail": "Conversation not found"}, status=status.HTTP_404_NOT_FOUND)
 
     user_member_1 = GroupMember.objects.filter(user_member=user, conversation_id=target_db_conversation).first()
+    user_member_2 = GroupMember.objects.filter(conversation_id=target_db_conversation).exclude(user_member=user).first()
 
     if user_member_1:
         user_member_1.delete()
-
-    user_member_2 = GroupMember.objects.filter(conversation_id=target_db_conversation).exclude(user_member=user).first()
 
     if user_member_2:
         user_member_2.delete()
