@@ -6,11 +6,11 @@ from chat.utils.parseJWT import parse_token, parse_chat
 from datetime import datetime
 import logging
 from typing import NamedTuple
+
 logger = logging.getLogger(__name__)
 
 
 class ChatConsumer(WebsocketConsumer):
-
     connected_users = {}
 
     def __init__(self, *args, **kwargs):
@@ -22,6 +22,7 @@ class ChatConsumer(WebsocketConsumer):
         self.accept()
         try:
             decoded_query_data = self.scope['query_string'].decode('utf-8')
+
             self.chat = parse_chat(decoded_query_data)
             self.user = parse_token(decoded_query_data, connection_protocol='WS')
 
@@ -29,17 +30,20 @@ class ChatConsumer(WebsocketConsumer):
                 self.close()
                 return
 
-            print(f'Connected user: {self.user}, chat: {self.chat}')
+            logger.info(f'Connected user: {self.user}, chat: {self.chat}')
 
             async_to_sync(self.channel_layer.group_add)(
                 self.chat,
                 self.channel_name,
             )
-            if self.chat not in ChatConsumer.connected_users:
-                ChatConsumer.connected_users[self.chat] = []
-            ChatConsumer.connected_users[self.chat].append(self.user.username)
+
+            if self.chat not in self.connected_users:
+                self.connected_users[self.chat] = []
+
+            self.connected_users[self.chat].append(self.user.username)
             self.user_status('online')
             self.send_all_user_statuses()
+
         except Exception as e:
             logger.error(f"Error during authentication: {e}")
             self.close()
@@ -50,15 +54,16 @@ class ChatConsumer(WebsocketConsumer):
             self.chat,
             self.channel_name
         )
-        if self.chat in ChatConsumer.connected_users:
-            ChatConsumer.connected_users[self.chat].remove(self.user.username)
-            if not ChatConsumer.connected_users[self.chat]:
-                del ChatConsumer.connected_users[self.chat]
+
+        if self.chat in self.connected_users:
+            self.connected_users[self.chat].remove(self.user.username)
+            if not self.connected_users[self.chat]:
+                del self.connected_users[self.chat]
         self.close()
 
     def send_all_user_statuses(self):
-        if self.chat in ChatConsumer.connected_users:
-            for username in ChatConsumer.connected_users[self.chat]:
+        if self.chat in self.connected_users:
+            for username in self.connected_users[self.chat]:
                 self.send(text_data=json.dumps({
                     'type': 'user_status',
                     'user': username,
@@ -67,6 +72,7 @@ class ChatConsumer(WebsocketConsumer):
 
     def attach_message_to_conversation(self, parsed_data, user):
         conversation = Conversation.objects.filter(conversation_name=self.chat).first()
+
         if not conversation:
             print(f"Conversation not found: {self.chat}")
             raise ValueError(f"Conversation not found: {self.chat}")
@@ -77,7 +83,9 @@ class ChatConsumer(WebsocketConsumer):
             conversation_id=conversation,
             sent_datetime=datetime.now()
         )
+
         attach_message.save()
+
         async_to_sync(self.channel_layer.group_send)(
             self.chat,
             {
@@ -88,7 +96,6 @@ class ChatConsumer(WebsocketConsumer):
         )
 
     def receive(self, text_data=None, bytes_data=None):
-        assert (isinstance(text_data, bytes))
         if not text_data:
             logger.error("Empty text data received")
             self.send(text_data=json.dumps({
@@ -96,9 +103,9 @@ class ChatConsumer(WebsocketConsumer):
                 'message': 'Empty text data received'
             }))
             return
+
         try:
             parsed_data = json.loads(text_data)
-            print(parsed_data)
             if 'typing' in parsed_data:
                 self.send_typing_status(parsed_data['typing'])
 
@@ -112,15 +119,6 @@ class ChatConsumer(WebsocketConsumer):
             logger.error(f"Error processing message: {e}")
             self.close()
 
-    def chat_message(self, event):
-        message = event['message']
-        from_user = event['from']
-        self.send(text_data=json.dumps({
-            'type': 'chat_message',
-            'from': from_user,
-            'message': message
-        }))
-
     def user_status(self, status):
         if self.user:
             async_to_sync(self.channel_layer.group_send)(
@@ -131,15 +129,6 @@ class ChatConsumer(WebsocketConsumer):
                     'status': status
                 }
             )
-
-    def user_status_message(self, event):
-        user = event['user']
-        status = event['status']
-        self.send(text_data=json.dumps({
-            'type': 'user_status',
-            'user': user,
-            'status': status
-        }))
 
     def send_typing_status(self, typing_data):
         if not typing_data:
@@ -153,6 +142,15 @@ class ChatConsumer(WebsocketConsumer):
             }
         )
 
+    def user_status_message(self, event):
+        user = event['user']
+        status = event['status']
+        self.send(text_data=json.dumps({
+            'type': 'user_status',
+            'user': user,
+            'status': status
+        }))
+
     def user_typing(self, event):
         user = event['user']
 
@@ -165,4 +163,13 @@ class ChatConsumer(WebsocketConsumer):
             'type': 'send_typing_status',
             'user': user,
             'typing': typing
+        }))
+
+    def chat_message(self, event):
+        message = event['message']
+        from_user = event['from']
+        self.send(text_data=json.dumps({
+            'type': 'chat_message',
+            'from': from_user,
+            'message': message
         }))

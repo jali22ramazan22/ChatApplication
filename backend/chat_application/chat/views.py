@@ -7,11 +7,15 @@ from rest_framework.exceptions import ParseError, APIException
 from .models import *
 from django.db.models import Q
 from .utils.parseJWT import parse_token
+from .utils.timeit import timing
+import threading
 
 
+@timing
 def get_companions_of_related_chats(user_owner=None):
     if not user_owner:
         return None
+
     chats = GroupMember.objects.filter(user_member=user_owner)
     conversations = [chat.conversation_id for chat in chats]
 
@@ -26,6 +30,7 @@ def get_companions_of_related_chats(user_owner=None):
 @api_view(['GET'])
 def get_chats(request):
     user = parse_token(request, 'HTTP')  # importing the util to get the user id based on JWT AUTH
+
     conversations, companions = get_companions_of_related_chats(user)
 
     data = []
