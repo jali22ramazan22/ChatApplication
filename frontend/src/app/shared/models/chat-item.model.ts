@@ -7,6 +7,6 @@ export interface ChatItem{
 }
 
 export interface Message {
-  from: string;
-  message: string;
+  from_user: string;
+  message_text: string;
 }

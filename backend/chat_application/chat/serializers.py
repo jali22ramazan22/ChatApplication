@@ -1,14 +1,17 @@
-from rest_framework import serializers
-from .models import GroupMember, Message, Conversation
-from rest_framework.renderers import JSONRenderer
+from rest_framework import serializers, viewsets
+from .models import Message, Conversation, GroupMember
+from django.contrib.auth.models import User
 
-class MessageSerializer(serializers.ModelSerializer):
-    from_user = serializers.CharField()
-    message_text = serializers.CharField()
-    sent_datetime = serializers.DateField()
-    conversation_id = serializers.IntegerField()
+
+class MessageModelSerializer(serializers.ModelSerializer):
+    from_user = serializers.CharField(source='from_user.username', read_only=True)
 
     class Meta:
         model = Message
-        fields = ['from_user', 'message_text', 'sent_datetime', 'conversation_id']
+        fields = ['from_user', 'message_text']
 
+
+class UserModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username']

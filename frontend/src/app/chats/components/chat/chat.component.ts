@@ -50,8 +50,8 @@ export class ChatComponent implements OnInit, OnDestroy{
              return
             }
               const formatedMessage: Message ={
-                from: val.from,
-                message: val.message,
+                from_user: val.from,
+                message_text: val.message,
               }
             this.selectedChat?.message.push(formatedMessage);
           }
@@ -89,8 +89,8 @@ export class ChatComponent implements OnInit, OnDestroy{
         return;
       }
       const formatedMessage: Message = {
-        from: this.authUsername? this.authUsername: '',
-        message: this.inputMessage,
+        from_user: this.authUsername? this.authUsername: '',
+        message_text: this.inputMessage,
       }
 
       this.chatWSService.sendSocket(this.inputMessage);

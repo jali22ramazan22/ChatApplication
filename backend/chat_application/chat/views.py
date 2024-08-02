@@ -1,13 +1,17 @@
 import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.exceptions import ParseError, APIException
 from .models import *
+from .serializers import MessageModelSerializer, UserModelSerializer
 from django.db.models import Q
 from .utils.parseJWT import parse_token
 from .utils.timeit import timing
+
+# All function-based views that require
+# the JWT token to get user-id and
+# make a query to database via it
 
 
 @timing
@@ -25,7 +29,8 @@ def get_companions_of_related_chats(user_owner=None):
 
     return conversations, companions
 
-
+#the function-based view that returns all chats of related user
+#filtering all chats to return as API
 @timing
 @api_view(['GET'])
 def get_chats(request):
@@ -37,12 +42,8 @@ def get_chats(request):
 
     for conversation in conversations:
         messages = Message.objects.filter(conversation_id=conversation)
-        message_lst = [
-            {
-                "from": message.from_user.username,
-                "message": message.message_text
-            }
-            for message in messages]
+        serializer = MessageModelSerializer(messages, many=True)
+        message_lst = serializer.data
 
         companion = companions.filter(conversation_id=conversation).first()
         if companion:
@@ -55,6 +56,7 @@ def get_chats(request):
 
     return Response(data={"chats": data}, status=status.HTTP_200_OK)
 
+#the function-based view that returns all users that is not in conversation with request-user
 
 @timing
 @api_view(['GET'])
@@ -67,9 +69,9 @@ def get_users(request):
         users_to_exclude.append(companion.user_member.id)
 
     all_users = User.objects.exclude(id__in=users_to_exclude)
-    users_data = [{"id": user.id, "username": user.username} for user in all_users]
+    user_serializer = UserModelSerializer(all_users, many=True)
 
-    return Response(data={"users": users_data}, status=status.HTTP_200_OK)
+    return Response(data={"users": user_serializer.data}, status=status.HTTP_200_OK)
 
 
 @timing
@@ -93,9 +95,10 @@ def create_new_chat(request):
         raise APIException('User to add does not exist')
 
     conversation_name = f'{user.username}_{user_to_add.username}'
-    print(conversation_name)
+
 
     if not Conversation.objects.filter(conversation_name=conversation_name).exists():
+
         new_conversation = Conversation(conversation_name=conversation_name)
         new_conversation.save()
 

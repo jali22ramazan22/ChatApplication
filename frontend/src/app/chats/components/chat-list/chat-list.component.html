@@ -11,10 +11,10 @@
           <div class="last-message-info">
             @if (last_message(chat)){
               <div class="sender-info">
-                {{last_message(chat)?.from}}:
+                {{last_message(chat)?.from_user}}:
               </div>
               <div class="last-message-content">
-                {{last_message(chat)?.message}}
+                {{last_message(chat)?.message_text}}
               </div>
             } @else{
             }
