@@ -1,19 +1,14 @@
 from rest_framework import serializers
 from .models import GroupMember, Message, Conversation
+from rest_framework.renderers import JSONRenderer
 
-
-class ChatsSerializer(serializers.Serializer):
-    conversation_id = serializers.CharField()
-    user_member = serializers.CharField()
-
-    class Meta:
-        model = GroupMember
-        fields = ['conversation_name', 'user']
-
-
-class ConversationSerializer(serializers.Serializer):
-    conversation_name = serializers.CharField()
+class MessageSerializer(serializers.ModelSerializer):
+    from_user = serializers.CharField()
+    message_text = serializers.CharField()
+    sent_datetime = serializers.DateField()
+    conversation_id = serializers.IntegerField()
 
     class Meta:
-        model = Conversation
-        fields = ['conversation_name']
+        model = Message
+        fields = ['from_user', 'message_text', 'sent_datetime', 'conversation_id']
+

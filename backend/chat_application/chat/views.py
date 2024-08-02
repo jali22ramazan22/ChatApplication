@@ -8,7 +8,6 @@ from .models import *
 from django.db.models import Q
 from .utils.parseJWT import parse_token
 from .utils.timeit import timing
-import threading
 
 
 @timing
@@ -27,9 +26,10 @@ def get_companions_of_related_chats(user_owner=None):
     return conversations, companions
 
 
+@timing
 @api_view(['GET'])
 def get_chats(request):
-    user = parse_token(request, 'HTTP')  # importing the util to get the user id based on JWT AUTH
+    user = parse_token(request, connection_protocol='HTTP')  # importing the util to get the user id based on JWT AUTH
 
     conversations, companions = get_companions_of_related_chats(user)
 
@@ -56,6 +56,7 @@ def get_chats(request):
     return Response(data={"chats": data}, status=status.HTTP_200_OK)
 
 
+@timing
 @api_view(['GET'])
 def get_users(request):
     user = parse_token(request, connection_protocol='HTTP')
@@ -71,6 +72,7 @@ def get_users(request):
     return Response(data={"users": users_data}, status=status.HTTP_200_OK)
 
 
+@timing
 @api_view(['PUT'])
 def create_new_chat(request):
     user = parse_token(request, connection_protocol='HTTP')
@@ -108,6 +110,7 @@ def create_new_chat(request):
     return Response(data={"status": "success"}, status=status.HTTP_200_OK)
 
 
+@timing
 @api_view(['DELETE'])
 def delete_chat(request):
     user = parse_token(request, connection_protocol='HTTP')

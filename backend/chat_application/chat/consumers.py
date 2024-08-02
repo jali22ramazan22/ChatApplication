@@ -1,12 +1,10 @@
-from asgiref.sync import sync_to_async, async_to_sync
+from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 import json
 from .models import Message, GroupMember, Conversation
 from chat.utils.parseJWT import parse_token, parse_chat
 from datetime import datetime
 import logging
-from typing import NamedTuple
-
 logger = logging.getLogger(__name__)
 
 
@@ -108,7 +106,6 @@ class ChatConsumer(WebsocketConsumer):
             parsed_data = json.loads(text_data)
             if 'typing' in parsed_data:
                 self.send_typing_status(parsed_data['typing'])
-
             elif parsed_data.get('message', '') != '':
                 self.attach_message_to_conversation(parsed_data, self.user)
                 self.send(text_data=json.dumps({'status': 'success', 'data': parsed_data}))

@@ -7,7 +7,7 @@ from urllib import parse
 import json
 
 
-def parse_token(attached_data=None, connection_protocol='HTTP'):
+def parse_token(attached_data=None, *, connection_protocol='HTTP'):
     if not attached_data:
         raise Exception('No data to get attached token')
     token = None
