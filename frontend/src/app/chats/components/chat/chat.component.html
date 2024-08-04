@@ -16,22 +16,22 @@
     <div class="messages-holder">
       <div class="message-list">
         @for(message of chatMsgHistory; track message){
-            @if(message.from === authUsername && message.from != undefined){
+            @if(message.from_user === authUsername && message.from_user != undefined){
               <div class="message-item-me">
                 <div class="message-sender">
-                  {{message.from}}
+                  {{message.from_user}}
                 </div>
                 <div class="message-content">
-                  {{message.message}}
+                  {{message.message_text}}
                 </div>
               </div>
-            } @else if(message.from !== authUsername && message.from != undefined){
+            } @else if(message.from_user !== authUsername && message.from_user != undefined){
               <div class="message-item-companion">
                 <div class="message-sender">
-                  {{message.from}}
+                  {{message.from_user}}
                 </div>
                 <div class="message-content">
-                  {{message.message}}
+                  {{message.message_text}}
                 </div>
               </div>
             }
