@@ -8,6 +8,9 @@
 - Thus, any changes in db will be removed as soon as container shuts down 
 
 
+## TODO:
+- Dockerize and add new layer 'Redis' to run inside Python layer the Redis
+
 # To run the server
 ```c 
 docker build -t chatapp_backend_dev && docker run -d chatapp_backenddev

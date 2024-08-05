@@ -13,11 +13,13 @@ from .utils.parseJWT import parse_token
 from .utils.timeit import timing
 
 
-# All function-based views that require
-# the JWT token to get user-id and
-# make a query to database via it
 @timing
 def get_companions_of_related_chats(user_owner=None):
+    """
+    All function-based views that require
+    the JWT token to get user-id and
+    make a query to database via it
+    """
     if not user_owner:
         return None
 
@@ -32,11 +34,14 @@ def get_companions_of_related_chats(user_owner=None):
     return conversations, companions
 
 
-#the function-based view that returns all chats of related user
-#filtering all chats to return as API
 @timing
 @api_view(['GET'])
 def get_chats(request):
+    """
+    the function-based view that returns all chats of related user
+    filtering all chats to return as API
+    """
+
     user = parse_token(request, connection_protocol='HTTP')  # importing the util to get the user id based on JWT AUTH
 
     conversations, companions = get_companions_of_related_chats(user)
@@ -44,9 +49,11 @@ def get_chats(request):
     data = []
 
     for conversation in conversations:
+
         messages = Message.objects.filter(conversation_id=conversation)
         serializer = MessageModelSerializer(messages, many=True)
         message_lst = serializer.data
+
         companion = companions.filter(conversation_id=conversation).first()
         if companion:
             item = {
@@ -59,10 +66,13 @@ def get_chats(request):
     return Response(data={"chats": data}, status=status.HTTP_200_OK)
 
 
-#the function-based view that returns all users that is not in conversation with request-user
 @timing
 @api_view(['GET'])
 def get_users(request):
+    """
+    the function-based view that returns all users that
+    is not in conversation with request-user
+    """
     user = parse_token(request, connection_protocol='HTTP')
     conversations, companions = get_companions_of_related_chats(user)
 
@@ -75,8 +85,7 @@ def get_users(request):
 
     return Response(data={"users": user_serializer.data}, status=status.HTTP_200_OK)
 
-#TODO: rewrite the frontend request for excluding additional dict forming logic and
-# just transmit the dict from 'data' to serializer
+
 #TODO: write the ModelViewSet that hides the GroupMember CRUD operations
 @timing
 @api_view(['PUT'])

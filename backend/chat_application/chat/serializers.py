@@ -26,11 +26,10 @@ class ConversationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return Conversation.objects.create(**validated_data)
 
-    #temporarily written to for pretending 'constant invalidation'
-    def validate(self, attrs):
-        if 'conversation' in attrs:
-            attrs['conversation_name'] = attrs.pop('conversation')
-        return attrs
+    def to_internal_value(self, data):
+        if 'conversation' in data and isinstance(data, dict):
+            data['conversation_name'] = data.pop('conversation')
+        return super().to_internal_value(data)
 
     def validate_conversation_name(self, value):
         if Conversation.objects.filter(conversation_name=value).exists():

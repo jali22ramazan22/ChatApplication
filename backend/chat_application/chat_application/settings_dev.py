@@ -61,6 +61,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'chat_application.wsgi.application'
 ASGI_APPLICATION = "chat_application.asgi.application"
 
+
+"""
+Local database is used only for quick running and for developing only
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -69,7 +73,8 @@ DATABASES = {
 }
 
 
-# TODO: split the local redis into independent piece into docker
+# TODO: split the local redis into independent container into docker
+# TODO: write the docker-compose that will rely on redis container (Will download it from docker-hub)
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -78,6 +83,14 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+    }
+}
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {

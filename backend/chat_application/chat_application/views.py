@@ -1,19 +1,15 @@
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
+
+from chat.serializers import UserModelSerializer
 from .serializers import UserSerializer
 from rest_framework.exceptions import AuthenticationFailed
 import jwt, datetime
 from .settings import SECRET_KEY
 from rest_framework.decorators import api_view
-
-
-class BasicResponse:
-    def __init__(self, **kwargs):
-        self._parsed_data = {key: value for (key, value) in kwargs}
-
-    def return_response(self):
-        return Response(self._parsed_data)
+from django.core.cache import cache
+from .serializers import UserCacheSerializer
 
 
 #TODO: add refresh token arhitecture to auth app
@@ -37,6 +33,16 @@ def login_view(request):
     }
 
     token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').encode('utf-8')
+
+    cache_data = {
+        "user": UserModelSerializer(user).data,
+        "payload": token
+    }
+    # serializer = UserCacheSerializer(data=cache_data)
+    # if serializer.is_valid():
+    #     serializer.save()
+    #
+    # cache.set("FROM_DJANGO", "TRUE")
 
     return Response({
         "token": token,
